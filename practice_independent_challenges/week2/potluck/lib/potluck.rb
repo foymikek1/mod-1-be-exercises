@@ -31,5 +31,4 @@ class Potluck
     menu_count = all_menu_items.flatten.count
     (category_count.to_f / menu_count.to_f) * 100
   end
-
 end
