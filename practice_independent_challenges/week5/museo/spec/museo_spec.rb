@@ -148,3 +148,274 @@ describe "Artist" do
     end
   end
 end
+
+describe "Curator" do
+  describe "#initialize" do
+    it 'is a curator' do
+      curator = Curator.new  
+      expect(curator).to be_a Curator
+    end
+
+    it 'has photographs' do
+      curator = Curator.new
+      expect(curator.photographs).to eq []
+    end
+
+    it 'can add photographs' do
+      curator = Curator.new
+      photo_1 = Photograph.new({
+       id: "1",      
+       name: "Rue Mouffetard, Paris (Boy with Bottles)",
+       artist_id: "1",
+       year: "1954"
+        })
+      photo_2 = Photograph.new({
+       id: "2",      
+       name: "Moonrise, Hernandez",
+       artist_id: "2",
+       year: "1941"
+        })
+      curator.add_photograph(photo_1)
+      curator.add_photograph(photo_2)
+      expect(curator.photographs).to eq [photo_1, photo_2]
+    end
+
+    it 'can add artists' do
+      curator = Curator.new
+      artist_1 = Artist.new({
+      id: "1",
+      name: "Henri Cartier-Bresson",
+      born: "1908",
+      died: "2004",
+      country: "France"
+      })
+
+      artist_2 = Artist.new({
+      id: "2",
+      name: "Ansel Adams",
+      born: "1902",
+      died: "1984",
+      country: "United States"
+      })
+      curator.add_artist(artist_1)
+      curator.add_artist(artist_2)
+      expect(curator.artists).to eq [artist_1, artist_2]
+    end
+
+    it 'can find artist by id' do
+      curator = Curator.new
+      artist_1 = Artist.new({
+      id: "1",
+      name: "Henri Cartier-Bresson",
+      born: "1908",
+      died: "2004",
+      country: "France"
+      })
+
+      artist_2 = Artist.new({
+      id: "2",
+      name: "Ansel Adams",
+      born: "1902",
+      died: "1984",
+      country: "United States"
+      })
+      curator.add_artist(artist_1)
+      curator.add_artist(artist_2)
+      expect(curator.find_artist_by_id("1")).to eq artist_1
+    end
+
+    it 'can return a list of all artists and their photographs' do      curator = Curator.new
+      curator = Curator.new
+      artist_1 = Artist.new({
+      id: "1",
+      name: "Henri Cartier-Bresson",
+      born: "1908",
+      died: "2004",
+      country: "France"
+        })
+      artist_2 = Artist.new({
+      id: "2",
+      name: "Ansel Adams",
+      born: "1902",
+      died: "1984",
+      country: "United States"
+        })
+      artist_3 = Artist.new({
+      id: "3",
+      name: "Anna Andre",
+      born: "1901",
+      died: "1994",
+      country: "United States"
+        })
+      photo_1 = Photograph.new({
+       id: "1",      
+       name: "Rue Mouffetard, Paris (Boy with Bottles)",
+       artist_id: "1",
+       year: "1954"
+        })
+      photo_2 = Photograph.new({
+       id: "2",      
+       name: "Moonrise, Hernandez",
+       artist_id: "2",
+       year: "1941"
+        })
+      photo_3 = Photograph.new({
+       id: "3",      
+       name: "Howling at the Moon",
+       artist_id: "3",
+       year: "1941"
+        })
+      photo_4 = Photograph.new({
+       id: "4",      
+       name: "Cyote chewing on a cigarette",
+       artist_id: "3",
+       year: "1949"
+        })
+      curator.add_photograph(photo_1)
+      curator.add_photograph(photo_2)
+      curator.add_photograph(photo_3)
+      curator.add_photograph(photo_4)
+      curator.add_artist(artist_1)
+      curator.add_artist(artist_2)
+      curator.add_artist(artist_3)
+
+      list = {
+        artist_1 => [photo_1],
+        artist_2 => [photo_2],
+        artist_3 => [photo_3, photo_4]
+      }
+      expect(curator.artists_and_photos).to eq list
+    end
+
+    it 'can return a list of all artists and their photographs' do      curator = Curator.new
+      curator = Curator.new
+      artist_1 = Artist.new({
+      id: "1",
+      name: "Henri Cartier-Bresson",
+      born: "1908",
+      died: "2004",
+      country: "France"
+        })
+      artist_2 = Artist.new({
+      id: "2",
+      name: "Ansel Adams",
+      born: "1902",
+      died: "1984",
+      country: "United States"
+        })
+      artist_3 = Artist.new({
+      id: "3",
+      name: "Anna Andre",
+      born: "1901",
+      died: "1994",
+      country: "United States"
+        })
+      photo_1 = Photograph.new({
+       id: "1",      
+       name: "Rue Mouffetard, Paris (Boy with Bottles)",
+       artist_id: "1",
+       year: "1954"
+        })
+      photo_2 = Photograph.new({
+       id: "2",      
+       name: "Moonrise, Hernandez",
+       artist_id: "2",
+       year: "1941"
+        })
+      photo_3 = Photograph.new({
+       id: "3",      
+       name: "Howling at the Moon",
+       artist_id: "3",
+       year: "1941"
+        })
+      photo_4 = Photograph.new({
+       id: "4",      
+       name: "Cyote chewing on a cigarette",
+       artist_id: "3",
+       year: "1949"
+        })
+      photo_5 = Photograph.new({
+       id: "5",      
+       name: "Sad Songs and Cowboys",
+       artist_id: "1",
+       year: "1923"
+        })
+      curator.add_photograph(photo_1)
+      curator.add_photograph(photo_2)
+      curator.add_photograph(photo_3)
+      curator.add_photograph(photo_4)
+      curator.add_photograph(photo_5)
+      curator.add_artist(artist_1)
+      curator.add_artist(artist_2)
+      curator.add_artist(artist_3)
+
+      list = [artist_1.name, artist_3.name]
+      expect(curator.artists_multiple_photographs).to eq list
+    end
+
+    it 'can return photos by nationality and artist' do
+      curator = Curator.new
+      artist_1 = Artist.new({
+      id: "1",
+      name: "Henri Cartier-Bresson",
+      born: "1908",
+      died: "2004",
+      country: "France"
+        })
+      artist_2 = Artist.new({
+      id: "2",
+      name: "Ansel Adams",
+      born: "1902",
+      died: "1984",
+      country: "United States"
+        })
+      artist_3 = Artist.new({
+      id: "3",
+      name: "Anna Andre",
+      born: "1901",
+      died: "1994",
+      country: "United States"
+        })
+      photo_1 = Photograph.new({
+       id: "1",      
+       name: "Rue Mouffetard, Paris (Boy with Bottles)",
+       artist_id: "1",
+       year: "1954"
+        })
+      photo_2 = Photograph.new({
+       id: "2",      
+       name: "Moonrise, Hernandez",
+       artist_id: "2",
+       year: "1941"
+        })
+      photo_3 = Photograph.new({
+       id: "3",      
+       name: "Howling at the Moon",
+       artist_id: "3",
+       year: "1941"
+        })
+      photo_4 = Photograph.new({
+       id: "4",      
+       name: "Cyote chewing on a cigarette",
+       artist_id: "3",
+       year: "1949"
+        })
+      curator.add_photograph(photo_1)
+      curator.add_photograph(photo_2)
+      curator.add_photograph(photo_3)
+      curator.add_photograph(photo_4)
+      curator.add_artist(artist_1)
+      curator.add_artist(artist_2)
+      curator.add_artist(artist_3)
+
+      condition_1 = curator.photos_by_name_and_country(artist_1.name, artist_1.country)
+      expect(condition_1).to eq [photo_1]
+
+      condition_2 = curator.photos_by_name_and_country(artist_3.name, artist_3.country)
+      expect(condition_2).to eq [photo_3, photo_4]
+
+      condition_3 = curator.photos_by_name_and_country(artist_1.name, artist_3.country)
+      expect(condition_3).to eq nil
+    end
+  end
+end
